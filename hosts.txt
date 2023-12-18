@@ -1,0 +1,30 @@
+127.0.0.1  localhost
+::1        localhost ip6-localhost ip6-loopback
+ff02::1    ip6-allnodes
+ff02::2    ip6-allrouters
+
+127.0.1.1  raspberrypi
+127.0.1.1  www.gartic.com.br
+127.0.1.1  gartic.com.br
+127.0.1.1  www.crazygames.com
+127.0.1.1  crazygames.com
+127.0.1.1  www.jogos360.com.br
+127.0.1.1  jogos360.com.br
+127.0.1.1  www.1001jogos.com.br
+127.0.1.1  1001jogos.com.br
+127.0.1.1  www.poki.com
+127.0.1.1  poki.com
+127.0.1.1  www.contexto.me
+127.0.1.1  contexto.me
+127.0.1.1  www.contextowordle.com
+127.0.1.1  contextowordle.com
+127.0.1.1  www.clickjogos.com.br
+127.0.1.1  clickjogos.com.br
+127.0.1.1  www.1001jogos.com.br
+127.0.1.1  1001jogos.com.br
+127.0.1.1  www.ojogos.com.br
+127.0.1.1  ojogos.com.br
+127.0.1.1  www.1001jogos.pt
+127.0.1.1  1001jogos.pt
+127.0.1.1  pt.y8.com
+127.0.1.1  y8.com
