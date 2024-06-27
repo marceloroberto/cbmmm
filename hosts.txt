@@ -10,10 +10,6 @@ ff02::2    ip6-allrouters
 127.0.1.1  crazygames.com
 127.0.1.1  www.jogos360.com.br
 127.0.1.1  jogos360.com.br
-127.0.1.1  www.1001jogos.com.br
-127.0.1.1  1001jogos.com.br
-127.0.1.1  www.poki.com
-127.0.1.1  poki.com
 127.0.1.1  www.contexto.me
 127.0.1.1  contexto.me
 127.0.1.1  www.contextowordle.com
