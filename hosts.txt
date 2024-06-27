@@ -16,8 +16,6 @@ ff02::2    ip6-allrouters
 127.0.1.1  contextowordle.com
 127.0.1.1  www.clickjogos.com.br
 127.0.1.1  clickjogos.com.br
-127.0.1.1  www.1001jogos.com.br
-127.0.1.1  1001jogos.com.br
 127.0.1.1  www.ojogos.com.br
 127.0.1.1  ojogos.com.br
 127.0.1.1  www.1001jogos.pt
