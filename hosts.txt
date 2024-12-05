@@ -31,4 +31,5 @@ ff02::2    ip6-allrouters
 127.0.1.1  gartic.com.br
 127.0.1.1  whatsapp.com
 127.0.1.1  web.whatsapp.com
-
+127.0.1.1  stopots.com/pt
+127.0.1.1  stopots.com
