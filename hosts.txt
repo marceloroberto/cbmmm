@@ -20,3 +20,8 @@ ff02::2    ip6-allrouters
 127.0.1.1  1001jogos.pt
 127.0.1.1  pt.y8.com
 127.0.1.1  y8.com
+127.0.1.1  poki.com
+127.0.1.1  poki.com/br
+127.0.1.1  friv.com
+127.0.1.1  frivjogosonline.com.br
+127.0.1.1  friv.com.br
