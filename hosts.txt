@@ -25,3 +25,8 @@ ff02::2    ip6-allrouters
 127.0.1.1  friv.com
 127.0.1.1  frivjogosonline.com.br
 127.0.1.1  friv.com.br
+127.0.1.1  gartic.com
+127.0.1.1  gartic.com.br
+127.0.1.1  whatsapp.com
+127.0.1.1  web.whatsapp.com
+
