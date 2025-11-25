@@ -33,3 +33,13 @@ ff02::2    ip6-allrouters
 127.0.1.1  web.whatsapp.com
 127.0.1.1  stopots.com/pt
 127.0.1.1  stopots.com
+127.0.1.1  termo.ooo
+127.0.1.1  termo.pt
+127.0.1.1  termo-jogo.com
+127.0.1.1  termo.ooo
+127.0.1.1  termo.onl
+127.0.1.1  letreco.org
+127.0.1.1  jogosnainternet.com.br
+127.0.1.1  wordleplay.com
+127.0.1.1  termoinfinito.com
+127.0.1.1  term.ooo
