@@ -98,6 +98,9 @@ bash "$UPDATE_SCRIPT"
 
 echo "----------------------------------"
 echo "✅ Atualização finalizada com sucesso."
+echo "----------------------------------"
+
+echo "Esta tela fechará automaticamente em até 5 segundos..."
 
 # read -p "Pressione ENTER para fechar o terminal..."
 
