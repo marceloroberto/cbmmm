@@ -43,3 +43,6 @@ ff02::2    ip6-allrouters
 127.0.1.1  wordleplay.com
 127.0.1.1  termoinfinito.com
 127.0.1.1  term.ooo
+127.0.1.1  minijogos.com.br
+127.0.1.1  clickjogos.com.br
+127.0.1.1  gamaverse.com.br
