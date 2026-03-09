@@ -29,7 +29,7 @@ if ! dpkg -s brave-browser > /dev/null 2>&1; then
         log_error "Falha ao baixar a chave GPG do Brave. Verifique a conexão."
     fi
     
-    if ! echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=armhf] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list > /dev/null; then
+    if ! sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-release.sources https://brave-browser-apt-release.s3.brave.com/brave-browser.sources; then
         log_error "Falha ao adicionar o repositório do Brave."
     fi
 
