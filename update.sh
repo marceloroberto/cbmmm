@@ -50,6 +50,11 @@ else
 fi
 
 
+log_message "Instalando o Nextcloud Desktop..."
+if ! sudo apt install nextcloud-desktop -y; then
+    log_error "Falha ao instalar o pacote nextcloud-desktop."
+fi
+
 # ----------------------------------------------------
 # --- 1) Atualização Completa do Sistema e Pacotes ---
 # ----------------------------------------------------
