@@ -14,6 +14,22 @@ log_error() {
     exit 1
 }
 
+# >>> NOVO: aviso sem interromper
+log_warn() {
+    echo -e "\n\e[33m[AVISO]\e[0m $1"
+}
+
+# >>> NOVO: execução segura (não para o script)
+run_safe() {
+    DESC="$1"
+    shift
+
+    if ! "$@"; then
+        log_warn "$DESC falhou. Pulando para a próxima etapa..."
+        return 1
+    fi
+}
+
 # ----------------------------------------------------
 # --- 0) Verificação e Instalação Condicional do Brave ---
 # ----------------------------------------------------
@@ -22,28 +38,20 @@ log_message "Verificando a instalação do Brave Browser..."
 if ! dpkg -s brave-browser > /dev/null 2>&1; then
     log_message "Brave Browser não encontrado. Iniciando a instalação automática..."
     
-    sudo apt install curl -y > /dev/null 2>&1
+    run_safe "Instalação do curl" sudo apt install curl -y > /dev/null 2>&1
     
     log_message "Adicionando chave GPG e repositório do Brave..."
-    if ! sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg; then
-        log_error "Falha ao baixar a chave GPG do Brave. Verifique a conexão."
-    fi
+    run_safe "Download da chave GPG do Brave" sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
     
-    if ! sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-release.sources https://brave-browser-apt-release.s3.brave.com/brave-browser.sources; then
-        log_error "Falha ao adicionar o repositório do Brave."
-    fi
+    run_safe "Adição do repositório do Brave" sudo curl -fsSLo /etc/apt/sources.list.d/brave-browser-release.sources https://brave-browser-apt-release.s3.brave.com/brave-browser.sources
 
     log_message "Atualizando listas de pacotes para incluir o Brave..."
-    if ! sudo apt update; then
-        log_error "Falha ao atualizar a lista de pacotes."
-    fi
+    run_safe "apt update" sudo apt update
     
     log_message "Instalando o Brave Browser..."
-    if ! sudo apt install brave-browser -y; then
-        log_error "Falha ao instalar o pacote brave-browser."
-    fi
+    run_safe "Instalação do Brave" sudo apt install brave-browser -y
     
-    log_message "Brave Browser instalado com sucesso!"
+    log_message "Processo de instalação do Brave finalizado!"
 
 else
     log_message "Brave Browser já está instalado. Prosseguindo para a atualização do sistema."
@@ -51,20 +59,18 @@ fi
 
 
 log_message "Instalando o Nextcloud Desktop..."
-if ! sudo apt install nextcloud-desktop -y; then
-    log_error "Falha ao instalar o pacote nextcloud-desktop."
-fi
+run_safe "Instalação do Nextcloud Desktop" sudo apt install nextcloud-desktop -y
 
 # ----------------------------------------------------
 # --- 1) Atualização Completa do Sistema e Pacotes ---
 # ----------------------------------------------------
 log_message "Iniciando a atualização completa do sistema (apt update & apt upgrade)..."
 
-if ! sudo apt upgrade -y --fix-missing; then log_error "Falha ao atualizar os pacotes (apt upgrade)."; fi
+run_safe "Atualização de pacotes (apt upgrade)" sudo apt upgrade -y --fix-missing
 
 log_message "Limpando pacotes desnecessários (autoremove & autoclean)..."
-sudo apt autoremove -y
-sudo apt autoclean
+run_safe "apt autoremove" sudo apt autoremove -y
+run_safe "apt autoclean" sudo apt autoclean
 
 log_message "Atualização do sistema concluída."
 
@@ -86,9 +92,7 @@ for FILE in "${DESKTOP_FILES[@]}"; do
     if [ -f "$FILE" ]; then
         log_message "  -> Atalho existente encontrado: $FILE. Reescrevendo a linha Exec=..."
         
-        # CORREÇÃO FINAL: Usa o comando 'c' (change) do sed para APAGAR a linha Exec= e INSERIR a nova linha.
-        # Isso garante que a linha final seja exatamente a desejada, sem repetição de -stable.
-        sudo sed -i '/^Exec=/ c\Exec=/usr/bin/brave-browser-stable %U --incognito' "$FILE"
+        run_safe "Edição do atalho Brave" sudo sed -i '/^Exec=/ c\Exec=/usr/bin/brave-browser-stable %U --incognito' "$FILE"
 
         MODIFIED=true
         DEFAULT_DESKTOP_FILE="$FILE"
@@ -100,7 +104,6 @@ done
 if [ "$MODIFIED" = false ]; then
     log_message "  -> Nenhum atalho Brave existente encontrado. Criando novo atalho: $DEFAULT_DESKTOP_FILE"
     
-    # Cria o arquivo .desktop com a sintaxe Exec correta.
     sudo tee "$DEFAULT_DESKTOP_FILE" > /dev/null << EOF
 [Desktop Entry]
 Encoding=UTF-8
@@ -112,13 +115,14 @@ Icon=brave-browser
 Categories=Network;WebBrowser;
 EOF
     log_message "  -> Novo atalho criado com sucesso."
-    sudo chmod 644 "$DEFAULT_DESKTOP_FILE"
+    run_safe "Permissão do atalho" sudo chmod 644 "$DEFAULT_DESKTOP_FILE"
 fi
 
 # Limpeza de cache
 log_message "Forçando a atualização do cache dos menus do sistema..."
-sudo update-desktop-database /usr/share/applications/ > /dev/null 2>&1
-log_message "Configuração do Brave para modo Anônimo concluída. Reinicie a sessão para aplicar."
+run_safe "Atualização do cache desktop" sudo update-desktop-database /usr/share/applications/ > /dev/null 2>&1
+
+log_message "Configuração do Brave concluída. Reinicie a sessão para aplicar."
 
 
 # ----------------------------------------------------
@@ -126,13 +130,13 @@ log_message "Configuração do Brave para modo Anônimo concluída. Reinicie a s
 # ----------------------------------------------------
 log_message "Atualizando o arquivo de hosts para bloqueio de sites..."
 
-if ! sudo wget -O "${HOSTS_FILE}.tmp" "$HOSTS_URL"; then log_error "Falha ao baixar o novo arquivo de hosts."; fi
+run_safe "Download do arquivo hosts" sudo wget -O "${HOSTS_FILE}.tmp" "$HOSTS_URL"
 
 if [ -s "${HOSTS_FILE}.tmp" ]; then
-    sudo mv "${HOSTS_FILE}.tmp" "$HOSTS_FILE"
+    run_safe "Substituição do hosts" sudo mv "${HOSTS_FILE}.tmp" "$HOSTS_FILE"
     log_message "Arquivo de hosts atualizado com sucesso."
 else
-    log_error "O arquivo de hosts baixado está vazio ou inválido."
+    log_warn "O arquivo de hosts baixado está vazio ou inválido. Pulando..."
 fi
 
 
